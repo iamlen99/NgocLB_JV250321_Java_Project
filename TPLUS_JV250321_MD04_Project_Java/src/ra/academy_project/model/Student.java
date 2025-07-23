@@ -1,5 +1,7 @@
 package ra.academy_project.model;
 
+import ra.academy_project.validation.Validator;
+
 import java.time.LocalDate;
 
 public class Student {
@@ -89,4 +91,11 @@ public class Student {
     public void setCreateAt(LocalDate createAt) {
         this.createAt = createAt;
     }
+
+    @Override
+    public String toString() {
+        return String.format("| %-3d | %-20s | %-10s | %-25s | %-9s | %-13s | %-12s | %-10s |", this.id, this.name, this.dob,
+                this.email, this.sex ? "Nam" : "Nu", this.phone, this.password, this.createAt.format(Validator.formatter));
+    }
+
 }

@@ -16,14 +16,13 @@ public class AdminDAOImpl implements AdminDAO {
         Optional<Admin> result = Optional.empty();
         Connection conn = null;
         PreparedStatement preStmt = null;
-        ResultSet rs = null;
         String sql = "SELECT * FROM admin WHERE username = ? AND password = ?";
         try {
             conn = DBUtil.openConnection();
             preStmt = conn.prepareStatement(sql);
             preStmt.setString(1, username);
             preStmt.setString(2, password);
-            rs = preStmt.executeQuery();
+            ResultSet rs = preStmt.executeQuery();
             if (rs.next()) {
                 Admin admin = new Admin();
                 admin.setId(rs.getInt("id"));

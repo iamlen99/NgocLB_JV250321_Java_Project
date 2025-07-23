@@ -7,15 +7,16 @@ import java.util.Scanner;
 public class Main {
     private static final AdminPresentation adminPresentation = new AdminPresentation();
     private static final StudentPresentation studentPresentation = new StudentPresentation();
+
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
 
         do {
-            System.out.println("========== HE THONG QUAN LY DAO TAO ==========");
+            System.out.println("========================= HE THONG QUAN LY DAO TAO =========================");
             System.out.println("1. Dang nhap voi tu cach Quan tri vien");
             System.out.println("2. Dang nhap voi tu cach Hoc vien");
             System.out.println("3. Thoat");
-            System.out.println("==============================================");
+            System.out.println("============================================================================");
 
             int choice = Validator.inputValidInteger(scanner, "Lua chon cua ban: ");
 
@@ -37,4 +38,5 @@ public class Main {
             }
         } while (true);
     }
+
 }

@@ -12,7 +12,6 @@ public class AdminServiceImpl implements AdminService {
     public AdminServiceImpl() {
         adminDAO = new AdminDAOImpl();
     }
-
     public Optional<Admin> login(String username, String password) {
         return adminDAO.login(username, password);
     }

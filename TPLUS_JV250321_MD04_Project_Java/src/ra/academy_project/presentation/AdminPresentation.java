@@ -13,14 +13,15 @@ public class AdminPresentation {
     public AdminPresentation() {
         adminService = new AdminServiceImpl();
     }
-    Scanner scanner = new Scanner(System.in);
 
     public void login (Scanner scanner) {
+        int attempt = 0;
+        final int maxAttempts = 3;
         do {
-            System.out.println("========== DANG NHAP QUAN TRI ==========");
+            System.out.println("============================ DANG NHAP QUAN TRI ============================");
             String username = Validator.inputNotEmptyData(scanner, "Tai khoan: ");
             String password = Validator.inputNotEmptyData(scanner, "Mat khau: ");
-            System.out.println("========================================");
+            System.out.println("============================================================================");
 
             Optional<Admin> admin = adminService.login(username, password);
             if (admin.isPresent()) {
@@ -28,7 +29,13 @@ public class AdminPresentation {
                 displayAdminMenu(scanner);
                 break;
             } else {
-                System.out.println("Sai ten dang nhap hoac mat khau!");
+                attempt++;
+                if(attempt >= maxAttempts) {
+                    System.err.printf("Ban da nhap sai %d lan. Thuc hien thoat dang nhap\n",  maxAttempts);
+                    break;
+                } else {
+                    System.err.println("Sai ten dang nhap hoac mat khau!");
+                }
             }
         } while (true);
     }
@@ -36,29 +43,29 @@ public class AdminPresentation {
     public void displayAdminMenu (Scanner scanner) {
         boolean isExit = false;
         do {
-            System.out.println("========== MENU ADMIN ==========");
+            System.out.println("================================ MENU ADMIN ================================");
             System.out.println("1. Quan ly khoa hoc");
             System.out.println("2. Quan ly hoc vien");
             System.out.println("3. Quan ly dang ky hoc");
             System.out.println("4. Thong ke hoc vien theo khoa hoc");
             System.out.println("5. Dang xuat");
-            System.out.println("================================");
+            System.out.println("============================================================================");
 
             int choice = Validator.inputValidInteger(scanner, "Nhap lua chon: ");
 
             switch (choice) {
                 case 1:
-                    CousePresentation cousePresentation = new CousePresentation();
-                    cousePresentation.courseManagementMenu(scanner);
+                    CoursePresentation coursePresentation = new CoursePresentation();
+                    coursePresentation.courseManagementMenu(scanner);
                     break;
 
                 case 2:
-                    StudentPresentation studentPresentation = new StudentPresentation();
-                    studentPresentation.studentManagementMenu(scanner);
+                    StudentManagementPresentation studentManagementPresentation = new StudentManagementPresentation();
+                    studentManagementPresentation.studentManagementMenu(scanner);
                     break;
 
                 case 3:
-                    EnrollmentPresentation enrollmentPresentation = new EnrollmentPresentation();
+                    EnrollmentManagementPresentation enrollmentPresentation = new EnrollmentManagementPresentation();
                     enrollmentPresentation.enrollmentManagementMenu(scanner);
                     break;
 
