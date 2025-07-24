@@ -190,8 +190,58 @@ create procedure search_students(
 begin
     declare keyword varchar(100);
     set keyword = concat('%', keyword_in, '%');
-    select * from student where name like keyword
-    or email like keyword
-    or cast(id as char) like keyword;
+    select *
+    from student
+    where name like keyword
+       or email like keyword
+       or cast(id as char) like keyword;
+end $$
+DELIMITER ;
+
+# Tao procedure bang enrollment
+
+DELIMITER $$
+create procedure find_all_enrollments_by_student_id(
+    id_in int
+)
+begin
+    select e.id, e.student_id, e.course_id, c.name as course_name, e.registered_at, e.status
+    from enrollment as e
+             inner join course c on e.course_id = c.id
+    where student_id = id_in;
+end $$
+DELIMITER ;
+
+DELIMITER $$
+create procedure add_enrollment(
+    student_id_in int,
+    course_id_in int
+)
+begin
+    insert into enrollment (student_id, course_id)
+    values (student_id_in, course_id_in);
+end $$
+DELIMITER ;
+
+DELIMITER $$
+create procedure cancel_enrollment(
+    id_in int
+)
+begin
+    update enrollment
+    set status = 'CANCEL'
+    where course_id = id_in;
+end $$
+DELIMITER ;
+
+DELIMITER $$
+create procedure find_enrollment_by_id(
+    id_in int
+)
+begin
+    select e.id, e.student_id, e.course_id, c.name as course_name, e.registered_at, e.status
+    from enrollment as e
+             inner join course c on e.course_id = c.id
+    where e.id = id_in;
 end $$
 DELIMITER ;

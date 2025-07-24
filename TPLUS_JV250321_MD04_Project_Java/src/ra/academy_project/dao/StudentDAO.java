@@ -14,6 +14,14 @@ public interface StudentDAO {
 
     boolean isExistEmail(String email);
 
+//    int count(String email);
+//    int count(String email, String status);
+//    int count(String name);
+//
+//    List<Student> list(String name);
+//    List<Student> list(String name, List<String> sortKeys, List<String> sortDirs);
+//    List<Student> list(String name, List<String> sortKeys, List<String> sortDirs, int offset, int limit);
+
     boolean update (Student student);
 
     Optional<Student> findById(int id);
@@ -21,4 +29,6 @@ public interface StudentDAO {
     boolean delete(int id);
 
     List<Student> search(String searchValue);
+
+    boolean changePassword(int studentId, String password);
 }

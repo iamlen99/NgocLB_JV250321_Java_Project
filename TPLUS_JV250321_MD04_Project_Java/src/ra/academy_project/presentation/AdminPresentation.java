@@ -43,13 +43,13 @@ public class AdminPresentation {
     public void displayAdminMenu (Scanner scanner) {
         boolean isExit = false;
         do {
-            System.out.println("================================ MENU ADMIN ================================");
-            System.out.println("1. Quan ly khoa hoc");
-            System.out.println("2. Quan ly hoc vien");
-            System.out.println("3. Quan ly dang ky hoc");
-            System.out.println("4. Thong ke hoc vien theo khoa hoc");
-            System.out.println("5. Dang xuat");
-            System.out.println("============================================================================");
+            System.out.println("+=============================== MENU ADMIN ===============================+");
+            System.out.println("| 1. Quan ly khoa hoc                                                      |");
+            System.out.println("| 2. Quan ly hoc vien                                                      |");
+            System.out.println("| 3. Quan ly dang ky hoc                                                   |");
+            System.out.println("| 4. Thong ke hoc vien theo khoa hoc                                       |");
+            System.out.println("| 5. Dang xuat                                                             |");
+            System.out.println("+==========================================================================+");
 
             int choice = Validator.inputValidInteger(scanner, "Nhap lua chon: ");
 

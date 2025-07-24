@@ -1,13 +1,11 @@
 package ra.academy_project.dao.impl;
 
 import ra.academy_project.dao.StudentDAO;
-import ra.academy_project.model.Course;
 import ra.academy_project.model.Student;
 import ra.academy_project.utils.DBUtil;
 
 import java.sql.*;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -124,6 +122,12 @@ public class StudentDAOImpl implements StudentDAO {
         return false;
     }
 
+//    public String update(String id, String name) {
+//        // call student statement class in utils
+//    }
+//
+//    public String update(String id, String sex, Str)
+
     @Override
     public boolean update(Student student) {
         Connection conn = null;
@@ -206,8 +210,51 @@ public class StudentDAOImpl implements StudentDAO {
         CallableStatement callStmt = null;
         List<Student> studentList = null;
         try {
+            conn = DBUtil.openConnection();
+            callStmt = conn.prepareCall("{call search_students(?)}");
+            callStmt.setString(1, searchValue);
+            ResultSet rs = callStmt.executeQuery();
+            studentList = new ArrayList<>();
+            while (rs.next()) {
+                Student student = new Student();
+                student.setId(rs.getInt("id"));
+                student.setName(rs.getString("name"));
+                student.setDob(LocalDate.parse(rs.getString("dob")));
+                student.setEmail(rs.getString("email"));
+                student.setSex(rs.getBoolean("sex"));
+                student.setPhone(rs.getString("phone"));
+                student.setPassword(rs.getString("password"));
+                student.setCreateAt(LocalDate.parse(rs.getString("create_at")));
+                studentList.add(student);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            DBUtil.closeCallableStatement(callStmt);
+            DBUtil.closeConnection(conn);
+        }
+        return studentList;
+    }
 
-        } catch ()
+    @Override
+    public boolean changePassword(int studentId, String password) {
+        Connection conn = null;
+        PreparedStatement preStmt = null;
+        String  changePasswordSql = "UPDATE student SET password = ? WHERE id = ?";
+        try {
+            conn = DBUtil.openConnection();
+            preStmt = conn.prepareCall(changePasswordSql);
+            preStmt.setString(1, password);
+            preStmt.setInt(2, studentId);
+            preStmt.executeUpdate();
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            DBUtil.closePreparedStatement(preStmt);
+            DBUtil.closeConnection(conn);
+        }
+        return false;
     }
 
 }

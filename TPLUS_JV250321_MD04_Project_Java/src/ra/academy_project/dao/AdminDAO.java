@@ -6,4 +6,9 @@ import java.util.Optional;
 
 public interface AdminDAO {
     Optional<Admin> login(String username, String password);
+
+//    Optional<Admin> getByUsername(String username);
+//
+//    Optional<Admin> create();
+
 }

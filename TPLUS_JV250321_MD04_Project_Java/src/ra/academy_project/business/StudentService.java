@@ -18,4 +18,8 @@ public interface StudentService {
     void updateStudent(Student student);
 
     void deleteStudent(Student student);
+
+    List<Student> searchStudents(String searchValue);
+
+    void changePassword(int studentId, String newPassword);
 }

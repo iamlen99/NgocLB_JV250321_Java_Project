@@ -6,6 +6,7 @@ import ra.academy_project.model.Student;
 import ra.academy_project.validation.Validator;
 
 import java.time.LocalDate;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Scanner;
 
@@ -19,15 +20,15 @@ public class StudentManagementPresentation {
     public void studentManagementMenu(Scanner scanner) {
         boolean isExit = false;
         do {
-            System.out.println("========================= MENU STUDENT MANAGEMENT ==========================");
-            System.out.println("1. Hien thi danh sach hoc vien");
-            System.out.println("2. Them moi hoc vien");
-            System.out.println("3. Chinh sua thong tin hoc vien");
-            System.out.println("4. Xoa hoc vien");
-            System.out.println("5. Tim kiem theo ten, email hoac id");
-            System.out.println("6. Sap xep theo ten hoac id");
-            System.out.println("7. Quay ve menu chinh");
-            System.out.println("============================================================================");
+            System.out.println("+======================== MENU STUDENT MANAGEMENT =========================+");
+            System.out.println("| 1. Hien thi danh sach hoc vien                                           |");
+            System.out.println("| 2. Them moi hoc vien                                                     |");
+            System.out.println("| 3. Chinh sua thong tin hoc vien                                          |");
+            System.out.println("| 4. Xoa hoc vien                                                          |");
+            System.out.println("| 5. Tim kiem theo ten, email hoac id                                      |");
+            System.out.println("| 6. Sap xep theo ten hoac id                                              |");
+            System.out.println("| 7. Quay ve menu chinh                                                    |");
+            System.out.println("+==========================================================================+");
 
             int choice = Validator.inputValidInteger(scanner, "Nhap lua chon: ");
 
@@ -49,9 +50,11 @@ public class StudentManagementPresentation {
                     break;
 
                 case 5:
+                    searchStudents(scanner);
                     break;
 
                 case 6:
+                    displaySortMenu(scanner);
                     break;
 
                 case 7:
@@ -259,5 +262,98 @@ public class StudentManagementPresentation {
                 () -> {
                     System.out.println("Khong tim thay id ban vua nhap");
                 });
+    }
+
+    public void searchStudents(Scanner scanner) {
+        System.out.print("Nhap ten, email hoac id cua hoc vien ma ban can tim: ");
+        String searchValue = scanner.nextLine();
+        List<Student> students = studentService.searchStudents(searchValue);
+        if (students.isEmpty()) {
+            System.out.println("Khong tim thay hoc vien voi tu khoa ban vua nhap");
+        } else {
+            students.forEach(System.out::println);
+        }
+    }
+
+    public void displaySortMenu(Scanner scanner) {
+        boolean isExit = false;
+        do {
+            System.out.println("1. Sap xep hoc vien theo ten tang dan");
+            System.out.println("2. Sap xep hoc vien theo ten giam dan");
+            System.out.println("3. Sap xep hoc vien theo id tang dan");
+            System.out.println("4. Sap xep hoc vien theo id giam dan");
+            System.out.println("5. Thoat");
+
+            int choice = Validator.inputValidInteger(scanner, "Lua chon cua ban: ");
+
+            switch (choice) {
+                case 1:
+                    sortStudentsByNameASC();
+                    break;
+
+                case 2:
+                    sortStudentsByNameDESC();
+                    break;
+
+                case 3:
+                    sortStudentsByIdASC();
+                    break;
+
+                case 4:
+                    sortStudentsByIdDESC();
+                    break;
+
+                case 5:
+                    isExit = true;
+                    break;
+
+                default:
+                    System.out.println("Vui long chon tu 1-5");
+            }
+        } while (!isExit);
+    }
+
+    public void sortStudentsByNameASC () {
+        List<Student> listStudent = studentService.findAllStudents();
+        if (listStudent.isEmpty()) {
+            System.out.println("Danh sach trong");
+        } else {
+            listStudent.stream()
+                    .sorted(Comparator.comparing(Student::getName))
+                    .forEach(System.out::println);
+        }
+    }
+
+    public void sortStudentsByNameDESC () {
+        List<Student> listStudent = studentService.findAllStudents();
+        if (listStudent.isEmpty()) {
+            System.out.println("Danh sach trong");
+        } else {
+            listStudent.stream()
+                    .sorted(Comparator.comparing(Student::getName).reversed())
+                    .forEach(System.out::println);
+        }
+    }
+
+    public void sortStudentsByIdASC () {
+        List<Student> listStudent = studentService.findAllStudents();
+        if (listStudent.isEmpty()) {
+            System.out.println("Danh sach trong");
+        } else {
+            listStudent.stream()
+                    .sorted(Comparator.comparing(Student::getId))
+                    .forEach(System.out::println);
+        }
+    }
+
+    public void sortStudentsByIdDESC () {
+        List<Student> listStudent = studentService.findAllStudents();
+        if (listStudent.isEmpty()) {
+            System.out.println("Danh sach trong");
+        } else {
+            listStudent.stream()
+                    .sorted(Comparator.comparing(Student::getId).reversed())
+                    .forEach(System.out::println);
+        }
     }
 }

@@ -60,4 +60,18 @@ public class StudentServiceImpl implements StudentService {
             System.out.println("Co loi trong qua trinh xoa");
         }
     }
+
+    @Override
+    public List<Student> searchStudents(String searchValue) {
+        return studentDAO.search(searchValue);
+    }
+
+    @Override
+    public void changePassword(int studentId, String newPassword) {
+        if (studentDAO.changePassword(studentId, newPassword)) {
+            System.out.println("Thay doi mat khau thanh cong");
+        } else {
+            System.out.println("Co loi trong qua trinh thay doi mat khau");
+        }
+    }
 }

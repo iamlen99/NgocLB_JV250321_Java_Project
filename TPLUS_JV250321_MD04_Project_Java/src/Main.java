@@ -12,11 +12,11 @@ public class Main {
         Scanner scanner = new Scanner(System.in);
 
         do {
-            System.out.println("========================= HE THONG QUAN LY DAO TAO =========================");
-            System.out.println("1. Dang nhap voi tu cach Quan tri vien");
-            System.out.println("2. Dang nhap voi tu cach Hoc vien");
-            System.out.println("3. Thoat");
-            System.out.println("============================================================================");
+            System.out.println("+======================== HE THONG QUAN LY DAO TAO ========================+");
+            System.out.println("|                  1. Dang nhap voi tu cach Quan tri vien                  |");
+            System.out.println("|                  2. Dang nhap voi tu cach Hoc vien                       |");
+            System.out.println("|                  3. Thoat                                                |");
+            System.out.println("+==========================================================================+");
 
             int choice = Validator.inputValidInteger(scanner, "Lua chon cua ban: ");
 

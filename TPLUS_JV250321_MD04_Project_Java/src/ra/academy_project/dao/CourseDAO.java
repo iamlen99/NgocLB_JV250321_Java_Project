@@ -1,7 +1,6 @@
 package ra.academy_project.dao;
 
 import ra.academy_project.model.Course;
-import ra.academy_project.model.Student;
 
 import java.util.List;
 import java.util.Optional;

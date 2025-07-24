@@ -3,7 +3,6 @@ package ra.academy_project.model;
 import ra.academy_project.validation.Validator;
 
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 
 public class Course {
     private int id;
@@ -67,5 +66,10 @@ public class Course {
     public String toString() {
         return String.format("| %-3d | %-20s | %-10s | %-15s | %-10s |", this.id, this.name, this.duration
                 , this.instructor, this.createAt.format(Validator.formatter));
+    }
+
+    public static void printMenu() {
+        System.out.printf("| %-12s | %-12s | %-11s | %-20s | %-20s | %-10s |\n", "Ma dinh danh", "Ma sinh vien"
+                , "Ma khoa hoc", "Ten khoa hoc", "Ngay dang ky", "Trang thai");
     }
 }
