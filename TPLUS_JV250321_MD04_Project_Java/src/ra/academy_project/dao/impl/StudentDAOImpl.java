@@ -1,6 +1,7 @@
 package ra.academy_project.dao.impl;
 
 import ra.academy_project.dao.StudentDAO;
+import ra.academy_project.model.CourseEnrolledStudent;
 import ra.academy_project.model.Student;
 import ra.academy_project.utils.DBUtil;
 
@@ -121,12 +122,6 @@ public class StudentDAOImpl implements StudentDAO {
         }
         return false;
     }
-
-//    public String update(String id, String name) {
-//        // call student statement class in utils
-//    }
-//
-//    public String update(String id, String sex, Str)
 
     @Override
     public boolean update(Student student) {
@@ -256,5 +251,4 @@ public class StudentDAOImpl implements StudentDAO {
         }
         return false;
     }
-
 }

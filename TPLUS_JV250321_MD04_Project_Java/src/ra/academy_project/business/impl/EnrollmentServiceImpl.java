@@ -3,6 +3,7 @@ package ra.academy_project.business.impl;
 import ra.academy_project.business.EnrollmentService;
 import ra.academy_project.dao.EnrollmentDAO;
 import ra.academy_project.dao.impl.EnrollmentDAOImpl;
+import ra.academy_project.model.CourseEnrolledStudent;
 import ra.academy_project.model.Enrollment;
 import ra.academy_project.model.EnrollmentStatus;
 
@@ -32,7 +33,7 @@ public class EnrollmentServiceImpl implements EnrollmentService {
     @Override
     public void cancelEnrollment(Enrollment enrollment) {
         if (enrollment.getStatus() == EnrollmentStatus.CANCEL) {
-            System.out.println("Khoa hoc nay da duoc xoa roi");
+            System.out.println("Khoa hoc nay da duoc huy roi");
             return;
         }
 
@@ -51,5 +52,15 @@ public class EnrollmentServiceImpl implements EnrollmentService {
     @Override
     public Optional<Enrollment> getEnrollmentById(int enrollmentId) {
         return enrollmentDAO.findById(enrollmentId);
+    }
+
+    @Override
+    public void displayCourseEnrolledStudents() {
+        List<CourseEnrolledStudent> enrolledStudentList = enrollmentDAO.findAll();
+        if (enrolledStudentList.isEmpty()) {
+            System.out.println("Danh sach trong");
+        } else {
+            enrolledStudentList.forEach(System.out::println);
+        }
     }
 }

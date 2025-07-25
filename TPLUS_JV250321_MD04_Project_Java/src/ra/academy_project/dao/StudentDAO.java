@@ -1,5 +1,6 @@
 package ra.academy_project.dao;
 
+import ra.academy_project.model.CourseEnrolledStudent;
 import ra.academy_project.model.Student;
 
 import java.util.List;
@@ -14,13 +15,6 @@ public interface StudentDAO {
 
     boolean isExistEmail(String email);
 
-//    int count(String email);
-//    int count(String email, String status);
-//    int count(String name);
-//
-//    List<Student> list(String name);
-//    List<Student> list(String name, List<String> sortKeys, List<String> sortDirs);
-//    List<Student> list(String name, List<String> sortKeys, List<String> sortDirs, int offset, int limit);
 
     boolean update (Student student);
 

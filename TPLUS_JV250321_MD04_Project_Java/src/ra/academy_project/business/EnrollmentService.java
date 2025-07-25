@@ -13,4 +13,6 @@ public interface EnrollmentService {
     void cancelEnrollment(Enrollment enrollment);
 
     Optional<Enrollment> getEnrollmentById(int enrollmentId);
+
+    void displayCourseEnrolledStudents();
 }

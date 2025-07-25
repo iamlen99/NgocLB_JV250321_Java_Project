@@ -230,7 +230,7 @@ create procedure cancel_enrollment(
 begin
     update enrollment
     set status = 'CANCEL'
-    where course_id = id_in;
+    where id = id_in;
 end $$
 DELIMITER ;
 
@@ -243,5 +243,15 @@ begin
     from enrollment as e
              inner join course c on e.course_id = c.id
     where e.id = id_in;
+end $$
+DELIMITER ;
+
+DELIMITER $$
+create procedure find_students_by_course()
+begin
+    select e.id, e.student_id, s.name as student_name, e.course_id, c.name as course_name, e.registered_at, e.status
+    from enrollment as e
+             inner join course c on e.course_id = c.id
+             inner join student s on e.student_id = s.id;
 end $$
 DELIMITER ;

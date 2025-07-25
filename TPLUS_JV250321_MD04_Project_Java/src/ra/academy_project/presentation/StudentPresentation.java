@@ -8,6 +8,7 @@ import ra.academy_project.business.impl.EnrollmentServiceImpl;
 import ra.academy_project.business.impl.StudentServiceImpl;
 import ra.academy_project.model.Course;
 import ra.academy_project.model.Enrollment;
+import ra.academy_project.model.EnrollmentStatus;
 import ra.academy_project.model.Student;
 import ra.academy_project.validation.Validator;
 
@@ -131,6 +132,7 @@ public class StudentPresentation {
         if (courseList.isEmpty()) {
             System.out.println("Danh sach trong");
         } else {
+            System.out.printf("| %-3s | %-20s | %-10s | %-15s | %-10s |\n", "ID", "Ten khoa hoc", "Thoi luong", "Giang vien", "Ngay them");
             courseList.forEach(System.out::println);
         }
     }
@@ -142,27 +144,46 @@ public class StudentPresentation {
     }
 
     public Enrollment inputEnrollmentData(Scanner scanner) {
+        Integer courseId = inputCourseId(scanner, "Nhap ma khoa hoc can dang ky: ");
+        if (courseId == null) {
+            return null;
+        }
+
         Enrollment enrollment = new Enrollment();
         enrollment.setStudentId(currentStudent.getId());
-        enrollment.setCourseId(inputCourseId(scanner, "Nhap ma khoa hoc can dang ky: "));
+        enrollment.setCourseId(courseId);
         return enrollment;
     }
 
     public void addEnrollment(Scanner scanner) {
+        displayAllCourses();
         Enrollment enrollment = inputEnrollmentData(scanner);
+        if (enrollment == null) {
+            return;
+        }
         enrollmentService.addEnrollment(enrollment);
     }
 
-    public int inputCourseId(Scanner scanner, String message) {
-        do {
-            int courseId = Validator.inputValidInteger(scanner, message);
-            Optional<Course> course = courseService.findCourseById(courseId);
-            if (course.isPresent()) {
-                return courseId;
-            } else {
-                System.out.println("Khong tim thay khoa hoc co id ban vua nhap");
-            }
-        } while (true);
+    public Integer inputCourseId(Scanner scanner, String message) {
+        List<Enrollment> enrollmentList = enrollmentService.getEnrollmentByStudentId(currentStudent.getId());
+
+        int courseId = Validator.inputValidInteger(scanner, message);
+        Optional<Course> course = courseService.findCourseById(courseId);
+        if (course.isEmpty()) {
+            System.out.println("Khong tim thay khoa hoc co id ban vua nhap");
+            return null;
+        }
+
+        boolean alreadyEnrolled = enrollmentList.stream()
+                .anyMatch(enrollment -> enrollment.getCourseId() == courseId
+                        && (enrollment.getStatus() == EnrollmentStatus.WAITING
+                        || enrollment.getStatus() == EnrollmentStatus.CONFIRM));
+
+        if (alreadyEnrolled) {
+            System.out.println("Ban da dang ki khoa hoc nay roi");
+            return null;
+        }
+        return courseId;
     }
 
     public void displayEnrollmentMenu(Scanner scanner) {
@@ -290,7 +311,7 @@ public class StudentPresentation {
 
     public void cancelEnrollmentByCourseId(Scanner scanner) {
         displayEnrollment();
-        int cancelledId = Validator.inputValidInteger(scanner, "Nhap ma dang ky cua khoa hoc can huy");
+        int cancelledId = Validator.inputValidInteger(scanner, "Nhap ma dang ky cua khoa hoc can huy: ");
         enrollmentService.getEnrollmentById(cancelledId).ifPresentOrElse(enrollmentService::cancelEnrollment,
                 () -> {
                     System.out.println("Khong tim thay ma dang ky cua khoa hoc can huy");
@@ -298,13 +319,28 @@ public class StudentPresentation {
     }
 
     public void changePassword(Scanner scanner) {
+        System.out.print("Xac thuc lai email cua ban: ");
+        String inputtedEmail = scanner.nextLine();
+        if (!inputtedEmail.equals(currentStudent.getEmail())) {
+            System.out.println("Email khong dung, thuc hien quay lai menu hoc vien!");
+            return;
+        }
+
+        System.out.print("Nhap mat khau cu: ");
+        String inputtedPassword = scanner.nextLine();
+        if (!inputtedPassword.equals(currentStudent.getPassword())) {
+            System.out.println("Mat khau khong dung, thuc hien quay lai menu hoc vien!");
+            return;
+        }
+
         StudentManagementPresentation smp = new StudentManagementPresentation();
         String newPassword = smp.inputPassword(scanner, "Nhap mat khau moi: ");
         if (newPassword.equals(currentStudent.getPassword())) {
             System.out.println("Mat khau moi khong duoc trung mat khau cu");
-        } else {
-            studentService.changePassword(currentStudent.getId(), newPassword);
-            currentStudent.setPassword(newPassword);
+            return;
         }
+
+        studentService.changePassword(currentStudent.getId(), newPassword);
+        currentStudent.setPassword(newPassword);
     }
 }

@@ -1,6 +1,7 @@
 package ra.academy_project.dao.impl;
 
 import ra.academy_project.dao.EnrollmentDAO;
+import ra.academy_project.model.CourseEnrolledStudent;
 import ra.academy_project.model.Enrollment;
 import ra.academy_project.model.EnrollmentStatus;
 import ra.academy_project.utils.DBUtil;
@@ -116,5 +117,36 @@ public class EnrollmentDAOImpl implements EnrollmentDAO {
             DBUtil.closeConnection(conn);
         }
         return enrollmentOptional;
+    }
+
+    @Override
+    public List<CourseEnrolledStudent> findAll() {
+        List<CourseEnrolledStudent> listEnrolledStudent = null;
+        Connection conn = null;
+        CallableStatement callStmt = null;
+        try {
+            conn = DBUtil.openConnection();
+            callStmt = conn.prepareCall("CALL find_students_by_course()");
+            ResultSet rs = callStmt.executeQuery();
+            listEnrolledStudent = new ArrayList<>();
+            while (rs.next()) {
+                CourseEnrolledStudent enrolledStudent = new CourseEnrolledStudent();
+                enrolledStudent.setEnrollmentId(rs.getInt("id"));
+                enrolledStudent.setStudentId(rs.getInt("student_id"));
+                enrolledStudent.setStudentName(rs.getString("student_name"));
+                enrolledStudent.setCourseId(rs.getInt("course_id"));
+                enrolledStudent.setCourseName(rs.getString("course_name"));
+                enrolledStudent.setRegisteredDate(LocalDateTime.parse(rs.getString("registered_at")
+                        , DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+                enrolledStudent.setStatus(EnrollmentStatus.valueOf(rs.getString("status")));
+                listEnrolledStudent.add(enrolledStudent);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            DBUtil.closeCallableStatement(callStmt);
+            DBUtil.closeConnection(conn);
+        }
+        return listEnrolledStudent;
     }
 }

@@ -12,7 +12,7 @@ public class Enrollment {
     private LocalDateTime registeredDate;
     private EnrollmentStatus status;
 
-    public Enrollment(int enrollmentId, int studentId, int courseId, LocalDateTime registeredDate, EnrollmentStatus status) {
+    public Enrollment(int enrollmentId, int studentId, int courseId, String courseName, LocalDateTime registeredDate, EnrollmentStatus status) {
         this.enrollmentId = enrollmentId;
         this.studentId = studentId;
         this.courseId = courseId;

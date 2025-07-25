@@ -1,10 +1,18 @@
 package ra.academy_project.presentation;
 
+import ra.academy_project.business.EnrollmentService;
+import ra.academy_project.business.impl.EnrollmentServiceImpl;
 import ra.academy_project.validation.Validator;
 
 import java.util.Scanner;
 
 public class EnrollmentManagementPresentation {
+    public final EnrollmentService enrollmentService;
+
+    public EnrollmentManagementPresentation() {
+        enrollmentService = new EnrollmentServiceImpl();
+    }
+
     public void enrollmentManagementMenu(Scanner scanner) {
         boolean isExit = false;
         do {
@@ -19,6 +27,7 @@ public class EnrollmentManagementPresentation {
 
             switch (choice) {
                 case 1:
+                    displayCourseEnrolledStudents();
                     break;
 
                 case 2:
@@ -35,5 +44,11 @@ public class EnrollmentManagementPresentation {
                     System.out.println("Vui long chon tu 1-4");
             }
         } while (!isExit);
+    }
+
+    public void displayCourseEnrolledStudents (){
+        System.out.printf("| %-12s | %-12s | %-22s | %-11s | %-20s | %-20s | %-10s |\n", "Ma dang ky", "Ma sinh vien", "Ten sinh vien"
+                , "Ma khoa hoc", "Ten khoa hoc", "Ngay dang ky", "Trang thai");
+        enrollmentService.displayCourseEnrolledStudents();
     }
 }

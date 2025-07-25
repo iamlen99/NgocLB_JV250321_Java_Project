@@ -1,5 +1,6 @@
 package ra.academy_project.dao;
 
+import ra.academy_project.model.CourseEnrolledStudent;
 import ra.academy_project.model.Enrollment;
 
 import java.util.List;
@@ -13,4 +14,6 @@ public interface EnrollmentDAO {
     boolean cancel(int enrollmentId);
 
     Optional<Enrollment> findById(int enrollmentId);
+
+    List<CourseEnrolledStudent> findAll();
 }
