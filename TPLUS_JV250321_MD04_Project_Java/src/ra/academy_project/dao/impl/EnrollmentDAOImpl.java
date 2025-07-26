@@ -149,4 +149,45 @@ public class EnrollmentDAOImpl implements EnrollmentDAO {
         }
         return listEnrolledStudent;
     }
+
+    @Override
+    public boolean approve(int enrollmentId, EnrollmentStatus status) {
+        Connection conn = null;
+        PreparedStatement preStmt = null;
+        String approveSql = "update enrollment set status = ? where id=?";
+        try {
+            conn = DBUtil.openConnection();
+            preStmt = conn.prepareStatement(approveSql);
+            preStmt.setString(1, status.name());
+            preStmt.setInt(2, enrollmentId);
+            preStmt.executeUpdate();
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            DBUtil.closePreparedStatement(preStmt);
+            DBUtil.closeConnection(conn);
+        }
+        return false;
+    }
+
+    @Override
+    public boolean delete(int enrollmentId) {
+        Connection conn = null;
+        PreparedStatement preStmt = null;
+        String approveSql = "delete from enrollment where id=?";
+        try {
+            conn = DBUtil.openConnection();
+            preStmt = conn.prepareStatement(approveSql);
+            preStmt.setInt(1, enrollmentId);
+            preStmt.executeUpdate();
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            DBUtil.closePreparedStatement(preStmt);
+            DBUtil.closeConnection(conn);
+        }
+        return false;
+    }
 }

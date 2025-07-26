@@ -55,12 +55,25 @@ public class EnrollmentServiceImpl implements EnrollmentService {
     }
 
     @Override
-    public void displayCourseEnrolledStudents() {
-        List<CourseEnrolledStudent> enrolledStudentList = enrollmentDAO.findAll();
-        if (enrolledStudentList.isEmpty()) {
-            System.out.println("Danh sach trong");
+    public List<CourseEnrolledStudent> getCourseEnrolledStudents() {
+        return enrollmentDAO.findAll();
+    }
+
+    @Override
+    public void approveEnrollment(int enrollmentId, EnrollmentStatus status) {
+        if (enrollmentDAO.approve(enrollmentId, status)) {
+            System.out.println("Duyet dang ky thanh cong");
         } else {
-            enrolledStudentList.forEach(System.out::println);
+            System.out.println("Co loi trong qua trinh duyet");
+        }
+    }
+
+    @Override
+    public void deleteEnrollment(int enrollmentId) {
+        if (enrollmentDAO.delete(enrollmentId)) {
+            System.out.println("Xoa hoc vien khoi khoa hoc thanh cong");
+        } else {
+            System.out.println("Co loi trong qua trinh xoa hoc vien khoi khoa hoc");
         }
     }
 }

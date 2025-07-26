@@ -1,10 +1,22 @@
 package ra.academy_project.presentation;
 
+import ra.academy_project.business.StatisticsService;
+import ra.academy_project.business.impl.StatisticsServiceImpl;
+import ra.academy_project.model.CourseAndStudentStatistics;
+import ra.academy_project.model.StudentsByCourse;
 import ra.academy_project.validation.Validator;
 
+import java.util.List;
+import java.util.Optional;
 import java.util.Scanner;
 
 public class StatisticPresentation {
+    public final StatisticsService statisticsService;
+
+    public StatisticPresentation() {
+        statisticsService = new StatisticsServiceImpl();
+    }
+
     public void statisticMenu(Scanner scanner) {
         boolean isExit = false;
         do {
@@ -20,15 +32,19 @@ public class StatisticPresentation {
 
             switch (choice) {
                 case 1:
+                    displayCountCourseAndStudent();
                     break;
 
                 case 2:
+                    displayStudentsByCourse();
                     break;
 
                 case 3:
+                    displayTop5CourseByStudentCount();
                     break;
 
                 case 4:
+                    displayCourseMoreThan10Students();
                     break;
 
                 case 5:
@@ -39,5 +55,28 @@ public class StatisticPresentation {
                     System.out.println("Vui long chon tu 1-5");
             }
         } while (!isExit);
+    }
+
+    public void displayCountCourseAndStudent() {
+        Optional<CourseAndStudentStatistics> countOptional = statisticsService.statisticsCount();
+        countOptional.ifPresentOrElse(System.out::println,
+                () -> {
+                    System.out.println("Danh sach trong");
+                });
+    }
+
+    public void displayStudentsByCourse() {
+        List<StudentsByCourse> listStudent = statisticsService.findAllStudentsByCourse();
+        statisticsService.displayStatistics(listStudent);
+    }
+
+    public void displayTop5CourseByStudentCount() {
+        List<StudentsByCourse> listStudent = statisticsService.getTop5CourseByStudentCount();
+        statisticsService.displayStatistics(listStudent);
+    }
+
+    public void displayCourseMoreThan10Students() {
+        List<StudentsByCourse> listStudent = statisticsService.getCourseMoreThan10Students();
+        statisticsService.displayStatistics(listStudent);
     }
 }

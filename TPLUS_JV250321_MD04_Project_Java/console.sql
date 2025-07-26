@@ -255,3 +255,52 @@ begin
              inner join student s on e.student_id = s.id;
 end $$
 DELIMITER ;
+
+# Thong ke
+
+DELIMITER $$
+create procedure statistics_all_courses_and_all_students(
+    out count_courses int,
+    out count_students int
+)
+begin
+    select count(id) into count_courses from course;
+    select count(id) into count_students from student;
+end $$
+DELIMITER ;
+
+DELIMITER $$
+create procedure statistics_count_students_by_each_course()
+begin
+    select c.name as course_name, count(e.student_id)
+    as count_students
+    from enrollment e
+             inner join course c on e.course_id = c.id
+    group by e.course_id;
+end $$
+DELIMITER ;
+
+DELIMITER $$
+create procedure get_top_5_course_by_student_count()
+begin
+    select c.name as course_name, count(e.student_id)
+                  as count_students
+    from enrollment e
+             inner join course c on e.course_id = c.id
+    group by e.course_id
+    order by count_students DESC
+    limit 5;
+end $$
+DELIMITER ;
+# drop procedure get_courses_have_more_than_10_student;
+DELIMITER $$
+create procedure get_courses_have_more_than_10_student()
+begin
+    select c.name as course_name, count(e.student_id)
+                  as count_students
+    from enrollment e
+             inner join course c on e.course_id = c.id
+    group by e.course_id
+    having count(e.student_id) >10;
+end $$
+DELIMITER ;
