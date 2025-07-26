@@ -126,13 +126,10 @@ public class StudentPresentation {
     }
 
     public void displayAllCourses() {
-        List<Course> courseList = courseService.findAll();
-        if (courseList.isEmpty()) {
-            System.out.println("Danh sach trong");
-        } else {
-            System.out.printf("| %-3s | %-20s | %-10s | %-15s | %-10s |\n", "ID", "Ten khoa hoc", "Thoi luong", "Giang vien", "Ngay them");
-            courseList.forEach(System.out::println);
-        }
+        final int currentPage = 1;
+        final int pageSize = 5;
+        List<Course> courses = courseService.findAll(currentPage, pageSize);
+        courseService.displayCourses(courses);
     }
 
     public void findCourseByName(Scanner scanner) {

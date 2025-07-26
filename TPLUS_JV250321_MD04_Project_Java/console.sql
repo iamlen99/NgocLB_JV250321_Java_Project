@@ -63,11 +63,31 @@ VALUES (1, 1, 'CONFIRM'),
 
 
 # Tao procedure bang Course
+drop procedure get_course_total_pages;
 
 DELIMITER $$
-create procedure find_all_courses()
+create procedure get_course_total_pages (
+    page_size int,
+    out total_page int
+)
 begin
-    select * from course;
+    declare courses_count int;
+    set courses_count = ( select count(id) from course);
+    set total_page = CEIL(courses_count / page_size);
+end $$
+DELIMITER ;
+
+DELIMITER $$
+create procedure find_all_courses(
+    current_page int,
+    page_size int
+)
+begin
+    declare offset_index int;
+    set offset_index = (current_page - 1) * page_size;
+    select * from course
+    limit page_size
+    offset offset_index;
 end $$
 DELIMITER ;
 
@@ -272,8 +292,9 @@ DELIMITER ;
 DELIMITER $$
 create procedure statistics_count_students_by_each_course()
 begin
-    select c.name as course_name, count(e.student_id)
-    as count_students
+    select c.name as course_name,
+           count(e.student_id)
+                  as count_students
     from enrollment e
              inner join course c on e.course_id = c.id
     group by e.course_id;
@@ -283,7 +304,8 @@ DELIMITER ;
 DELIMITER $$
 create procedure get_top_5_course_by_student_count()
 begin
-    select c.name as course_name, count(e.student_id)
+    select c.name as course_name,
+           count(e.student_id)
                   as count_students
     from enrollment e
              inner join course c on e.course_id = c.id
@@ -296,11 +318,12 @@ DELIMITER ;
 DELIMITER $$
 create procedure get_courses_have_more_than_10_student()
 begin
-    select c.name as course_name, count(e.student_id)
+    select c.name as course_name,
+           count(e.student_id)
                   as count_students
     from enrollment e
              inner join course c on e.course_id = c.id
     group by e.course_id
-    having count(e.student_id) >10;
+    having count(e.student_id) > 10;
 end $$
 DELIMITER ;

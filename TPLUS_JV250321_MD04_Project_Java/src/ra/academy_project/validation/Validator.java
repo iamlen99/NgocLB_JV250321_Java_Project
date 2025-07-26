@@ -40,6 +40,16 @@ public class Validator {
         } while (true);
     }
 
+    public static int inputPositiveInteger(Scanner scanner, String message) {
+        do {
+            int input = Validator.inputValidInteger(scanner, message);
+            if (input > 0) {
+                return input;
+            }
+            System.err.println("Vui long nhap vao mot so nguyen duong");
+        } while (true);
+    }
+
     public static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
     public static final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");

@@ -6,7 +6,11 @@ import java.util.List;
 import java.util.Optional;
 
 public interface CourseService {
-    List<Course> findAll();
+    List<Course> findAll(int currentPage, int pageSize);
+
+    int getTotalPages(int pageSize);
+
+    void displayCourses(List<Course> courses);
 
     void addCourse(Course course);
 
